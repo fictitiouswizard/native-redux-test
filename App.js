@@ -1,10 +1,34 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import AddTodo from "./components/AddTodo";
 
 export default function App() {
+  const [todos, setTodos] = useState([]);
+
+  const addTodoHandler = todo => {
+    let todoId = todos.length + 1;
+    setTodos([
+      ...todos,
+      ...[
+        {
+          id: todoId,
+          text: todo,
+          completed: false
+        }
+      ]
+    ]);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <AddTodo addTodoHandler={addTodoHandler} />
+      <ScrollView style={{ marginTop: 20, marginHorizontal: 20 }}>
+        {todos.map(todo => (
+          <Text style={{ margin: 10 }} key={todo.id}>
+            {todo.text}
+          </Text>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -12,8 +36,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "#fff"
+  }
 });
